@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Оценки студентов{% endblock %}
+
+{% block body %}
+    <h1>Студенты и их оценки</h1>
+
+    {% if students is empty %}
+        <p class="empty">Студентов пока нет.</p>
+    {% else %}
+        <table>
+            <thead>
+            <tr>
+                <th style="width: 30%;">Студент</th>
+                <th style="width: 40%;">Оценки</th>
+                <th style="width: 30%;">Новая оценка</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>{{ student.fullName }}</td>
+                    <td>
+                        {% if student.grades is empty %}
+                            <span class="empty">нет оценок</span>
+                        {% else %}
+                            <div class="grades-list">
+                                {% for grade in student.grades %}
+                                    <span class="grade-badge">{{ grade.value }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form class="grade-form"
+                              method="post"
+                              action="{{ path('app_grade_add', { id: student.id }) }}">
+                            <input type="number"
+                                   name="value"
+                                   class="grade-input"
+                                   min="1" max="5"
+                                   placeholder="1-5"
+                                   required>
+                            <input type="hidden" name="_token"
+                                   value="{{ csrf_token('grade') }}">
+                            <button type="submit">Отправить</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <h2>Добавить студента</h2>
+    {{ form_start(studentForm) }}
+    {{ form_row(studentForm.firstName) }}
+    {{ form_row(studentForm.lastName) }}
+    <button type="submit">Добавить</button>
+    {{ form_end(studentForm) }}
+{% endblock %}

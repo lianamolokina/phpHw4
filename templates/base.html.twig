@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Оценки студентов{% endblock %}</title>
+    <style>
+        body { font-family: -apple-system, Arial, sans-serif; max-width: 960px; margin: 2rem auto; padding: 0 1rem; color: #222; }
+        h1, h2 { margin-top: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { padding: .6rem .5rem; border-bottom: 1px solid #ddd; text-align: left; vertical-align: top; }
+        th { background: #f4f4f4; }
+        .grades-list { display: flex; flex-wrap: wrap; gap: .3rem; }
+        .grade-badge {
+            display: inline-block; padding: .15rem .55rem; border-radius: 12px;
+            background: #e0f0ff; color: #084298; font-weight: bold; font-size: .85rem;
+        }
+        .grade-form { display: flex; gap: .5rem; align-items: center; }
+        .grade-input { width: 80px; padding: .35rem; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: .35rem .9rem; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; background: #fff; }
+        button:hover { background: #f4f4f4; }
+        .flash { padding: .6rem 1rem; margin: .5rem 0; border-radius: 4px; }
+        .flash-success { background: #d4edda; color: #155724; }
+        .flash-error { background: #f8d7da; color: #721c24; }
+        .empty { color: #888; font-style: italic; }
+    </style>
+</head>
+<body>
+{% for type, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="flash flash-{{ type }}">{{ message }}</div>
+    {% endfor %}
+{% endfor %}
+
+{% block body %}{% endblock %}
+</body>
+</html>
